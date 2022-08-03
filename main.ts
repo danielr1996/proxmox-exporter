@@ -95,7 +95,7 @@ nodeMetrics.forEach(({name, help,pve_key})=>{
         help,
         labelNames: ['id', 'name','status'],
         async collect(){
-            nodes.forEach(({id,node,status,[pve_key]: metric})=>this.set({id,name:node,status},metric))
+            nodes.forEach(({id,node,status,[pve_key]: metric})=>this.set({id,name:node,status},metric || 0))
         }
     })
 })
@@ -166,7 +166,7 @@ vmMetrics.forEach(({name, help,pve_key})=>{
         help,
         labelNames: ['id', 'name', 'vmid','node','status'],
         async collect(){
-            vms.forEach(({id,name,vmid,node,status,[pve_key]: metric})=>this.set({id,name,vmid,node,status},metric))
+            vms.forEach(({id,name,vmid,node,status,[pve_key]: metric})=>this.set({id,name,vmid,node,status},metric || 0))
         }
     })
 })
@@ -202,7 +202,7 @@ storageMetrics.forEach(({name, help,pve_key})=>{
                 })
                 return Array.from(map.values())
             }
-            kindaUnique(storage).forEach(({id,storage,node,status,shared,content,[pve_key]: metric})=>this.set({id,node,status,name: storage,shared,content},metric))
+            kindaUnique(storage).forEach(({id,storage,node,status,shared,content,[pve_key]: metric})=>this.set({id,node,status,name: storage,shared,content},metric || 0))
         }
     })
 })
