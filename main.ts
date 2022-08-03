@@ -66,12 +66,12 @@ const nodeMetrics = [
     {
         name: 'pve_node_memory_size_bytes',
         help: 'Size of memory',
-        pve_key: 'mem',
+        pve_key: 'maxmem',
     },
     {
         name: 'pve_node_memory_usage_bytes',
         help: 'Memory usage in bytes',
-        pve_key: 'maxmem',
+        pve_key: 'mem',
     },
     {
         name: 'pve_node_cpu_usage_ratio',
@@ -117,12 +117,12 @@ const vmMetrics = [
     {
         name: 'pve_vm_memory_size_bytes',
         help: 'Size of memory',
-        pve_key: 'mem',
+        pve_key: 'maxmem',
     },
     {
         name: 'pve_vm_memory_usage_bytes',
         help: 'Memory usage in bytes',
-        pve_key: 'maxmem',
+        pve_key: 'mem',
     },
     {
         name: 'pve_vm_network_transmit_bytes',
