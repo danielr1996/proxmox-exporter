@@ -13,11 +13,6 @@ const config: ProxmoxEngineOptions = {
 }
 const proxmox = proxmoxApi(config);
 
-const cluster = (await proxmox.cluster.status.$get()).filter(s=>s.type=== 'cluster')[0]
-const nodes = await proxmox.nodes.$get()
-const vms = await proxmox.cluster.resources.$get({type: 'vm'})
-const storage = await proxmox.cluster.resources.$get({type: 'storage'})
-
 /**
  * Cluster Metrics
  */
@@ -44,6 +39,7 @@ clusterMetrics.forEach(({name, help,pve_key})=>{
         help,
         labelNames: ['name'],
         async collect(){
+            const cluster = (await proxmox.cluster.status.$get()).filter(s=>s.type=== 'cluster')[0]
             this.set({name: cluster.name},cluster[pve_key])
         }
     })
@@ -95,6 +91,7 @@ nodeMetrics.forEach(({name, help,pve_key})=>{
         help,
         labelNames: ['id', 'name','status'],
         async collect(){
+            const nodes = await proxmox.nodes.$get()
             nodes.forEach(({id,node,status,[pve_key]: metric})=>this.set({id,name:node,status},metric || 0))
         }
     })
@@ -166,6 +163,7 @@ vmMetrics.forEach(({name, help,pve_key})=>{
         help,
         labelNames: ['id', 'name', 'vmid','node','status'],
         async collect(){
+            const vms = await proxmox.cluster.resources.$get({type: 'vm'})
             vms.forEach(({id,name,vmid,node,status,[pve_key]: metric})=>this.set({id,name,vmid,node,status},metric || 0))
         }
     })
@@ -202,6 +200,7 @@ storageMetrics.forEach(({name, help,pve_key})=>{
                 })
                 return Array.from(map.values())
             }
+            const storage = await proxmox.cluster.resources.$get({type: 'storage'})
             kindaUnique(storage).forEach(({id,storage,node,status,shared,content,[pve_key]: metric})=>this.set({id,node,status,name: storage,shared,content},metric || 0))
         }
     })
