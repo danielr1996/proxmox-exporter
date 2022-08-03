@@ -1,0 +1,12 @@
+services:
+  prometheus:
+    build: .
+    restart: unless-stopped
+    ports:
+      - 9876:9876
+    environment:
+      PROXMOX_HOST: proxmox.app.danielr1996.de
+      PROXMOX_PORT: 80
+      PROXMOX_USERNAME: root@pam
+    env_file:
+      .env
